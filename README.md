@@ -1,71 +1,41 @@
 # Sistema de Gerenciamento de Academia
 
-Sistema desenvolvido em Python com interface gráfica utilizando PyQt6, com foco em organização modular, boas práticas de programação e versionamento com Git.
-
----
-
-## Sobre o Projeto
-
-Este projeto tem como objetivo simular um sistema de gerenciamento de alunos de uma academia, permitindo operações completas de CRUD (Create, Read, Update, Delete).
-
----
+Sistema desenvolvido em Python com PyQt6 para gerenciamento de alunos de uma academia, utilizando operações CRUD e versionamento com Git.
 
 ## Funcionalidades
 
 - Cadastro de alunos
-- Listagem de alunos
+- Listagem com filtro de busca
 - Atualização de dados
-- Exclusão de registros
-- Busca por ID
+- Remoção de alunos com confirmação
 - Validação de CPF
-- Suporte a tema claro/escuro (em desenvolvimento)
+- Interface gráfica com tema claro/escuro
 
----
+## Tecnologias utilizadas
 
-## Tecnologias Utilizadas
-
-- Python 3
+- Python
 - PyQt6
 - SQLite
 - Git e GitHub
 
----
+## Como executar
 
-## Estrutura do Projeto
+1. Clone o repositório:
+git clone https://github.com/aciolywilliams-dot/academia-app.git
 
-- ui/ → telas da aplicação
-- utils/ → funções auxiliares (validações, tema)
-- assets/ → ícones e imagens
-- banco.py → gerenciamento do banco de dados
-- main.py → inicialização do sistema
+2. Instale as dependências:
+pip install pyqt6
 
+3. Execute o projeto:
+python main.py
 
----
+## Estrutura do projeto
 
-## Objetivo
-
-Aplicar conceitos de:
-
-- Programação estruturada e modular
-- Separação de responsabilidades
-- Boas práticas de desenvolvimento
-- Versionamento de código com Git
-- Organização de projetos reais
-
----
-
-## Colaboração
-
-Projeto desenvolvido inicialmente por Acioly Williams, com possibilidade de colaboração em equipe utilizando GitHub.
-
----
-
-## Status do Projeto
-
-Em desenvolvimento
-
----
+- ui/ → telas do sistema
+- utils/ → funções auxiliares (tema, validações)
+- banco.py → operações com banco de dados
+- main.py → inicialização da aplicação
 
 ## Autor
 
-Acioly Williams
+Projeto desenvolvido para fins acadêmicos.
