@@ -2,4 +2,8 @@ __pycache__/
 *.pyc
 *.db
 tema.txt
-popular_banco.py
+*.py
+
+chave.key
+__pycache__/
+*.pyc
