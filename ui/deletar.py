@@ -3,7 +3,10 @@ from PyQt6.QtWidgets import (
     QLineEdit, QPushButton
 )
 from banco import buscar_por_id
+from banco import deletar_aluno
+from PyQt6.QtWidgets import QMessageBox
 import utils.tema as tema
+
 
 
 class TelaDeletar(QWidget):
@@ -36,6 +39,7 @@ class TelaDeletar(QWidget):
         # Botão deletar (inativo no começo)
         self.btn_deletar = QPushButton("Deletar")
         self.btn_deletar.setEnabled(False)
+        self.btn_deletar.clicked.connect(self.confirmar_delete)
 
         # Adicionando ao layout
         layout.addWidget(titulo)
@@ -75,3 +79,27 @@ class TelaDeletar(QWidget):
         else:
             self.resultado.setText("Aluno não encontrado")
             self.btn_deletar.setEnabled(False)
+
+    def confirmar_delete(self):
+        resposta = QMessageBox.question(
+            self,
+            "Confirmação",
+            "Tem certeza que deseja deletar este aluno?",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+        )
+
+        if resposta == QMessageBox.StandardButton.Yes:
+            self.deletar_aluno()
+
+    def deletar_aluno(self):
+        sucesso = deletar_aluno(self.id_encontrado)
+
+        if sucesso:
+            QMessageBox.information(self, "Sucesso", "Aluno deletado com sucesso")
+
+            self.resultado.setText("")
+            self.input_id.clear()
+            self.btn_deletar.setEnabled(False)
+
+        else:
+            QMessageBox.warning(self, "Erro", "Erro ao deletar aluno")
