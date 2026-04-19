@@ -1,13 +1,15 @@
 # Importando elementos da interface
+
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QHBoxLayout
 
 # Importando módulo do tema corretamente
-import utils.tema as tema
 
-from utils.toggle import ToggleSwitch
 from ui.cadastro import TelaCadastro
 from ui.listar import TelaListar
 from ui.atualizar import TelaAtualizar
+
+from utils.toggle import ToggleSwitch
+from utils import tema
 
 
 class Menu(QWidget):
@@ -59,7 +61,9 @@ class Menu(QWidget):
         self.setLayout(layout)
 
     def alterar_tema(self):
+
         # Atualiza o tema corretamente no módulo
+
         if self.btn_dark.isChecked():
             tema.TEMA_ATUAL = "dark"
         else:

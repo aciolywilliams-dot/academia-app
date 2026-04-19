@@ -1,11 +1,18 @@
+# 🔐 Segurança:
+# O CPF é armazenado criptografado no banco de dados usando Fernet.
+# Isso impede leitura direta dos dados sensíveis caso o banco seja acessado externamente.
+# A descriptografia ocorre apenas na camada de leitura (listagem/busca).
+
 import sqlite3
+from utils.seguranca import criptografar, descriptografar
 
 def conectar():
     return sqlite3.connect('academia.db')
 
 def criar_tabela():
-    conn = conectar()  # Abre a conexão com o banco de dados
-    cursor = conn.cursor() # Cria um cursor para executar comandos SQL
+    conn = conectar()
+    cursor = conn.cursor()
+
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS alunos (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -15,82 +22,102 @@ def criar_tabela():
         data_matricula TEXT NOT NULL,
         pagamento TEXT NOT NULL
     )
-    """) 
-    #Cria a tabela 'alunos' se ela não existir 
-    # O .execute é usado para executar comandos SQL
-    # Nesse caso, seleciona todos os registros da tabela 'alunos'
+    """)
 
-    conn.commit() # Salva as alterações no banco de dados
-    conn.close() # Fecha a conexão com o banco de dados
+    conn.commit()
+    conn.close()
 
-def inserir_aluno(nome, cpf,nasc,matricula, pagamento):
-    # Função para inserir um novo aluno na tabela 'alunos'
-    conn = conectar() 
-    cursor = conn.cursor() 
+def inserir_aluno(nome, cpf, nasc, matricula, pagamento):
+
+    # Criptografa o CPF antes de salvar no banco
+
+    cpf = criptografar(cpf)
+
+    conn = conectar()
+    cursor = conn.cursor()
+
     cursor.execute("""
     INSERT INTO alunos (nome, cpf, data_nascimento, data_matricula, pagamento)
     VALUES (?, ?, ?, ?, ?)
     """, (nome, cpf, nasc, matricula, pagamento))
-    # O ? são placeholders, para evitar erro de SQL Injection
-    # Insere um novo aluno na tabela 'alunos'
 
-    conn.commit() 
-    conn.close() 
+    conn.commit()
+    conn.close()
 
 def listar_alunos():
-    # Função para listar todos os alunos cadastrados na tabela 'alunos'
-    conn = conectar() 
-    cursor = conn.cursor() 
 
-    cursor.execute("SELECT * FROM alunos") 
-    alunos = cursor.fetchall() 
-    # O .fetchall() retorna todos os registros da consulta como uma lista de tuplas
-    conn.close() 
-    return alunos # Retorna a lista de alunos para ser usada em outras partes do programa
+    # Busca todos os alunos
+
+    conn = conectar()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM alunos")
+    alunos = cursor.fetchall()
+    conn.close()
+
+    alunos_descriptografados = []
+
+    for aluno in alunos:
+        id_aluno, nome, cpf, nasc, matricula, pagamento = aluno
+        cpf = descriptografar(cpf)
+
+        # Descriptografa o CPF antes de mostrar na interface
+
+        alunos_descriptografados.append(
+            (id_aluno, nome, cpf, nasc, matricula, pagamento)
+        )
+
+    return alunos_descriptografados
 
 def buscar_por_id(id):
-    # Função para buscar um aluno pelo ID
-    conn = conectar() 
-    cursor = conn.cursor() 
+    conn = conectar()
+    cursor = conn.cursor()
 
-    cursor.execute("SELECT * FROM alunos WHERE id = ?", (id,)) 
-    aluno = cursor.fetchone() 
-    # O .fetchone() retorna o primeiro registro da consulta como uma tupla
-    conn.close() 
-    return aluno # Retorna o aluno encontrado ou None se não for encontrado
+    cursor.execute("SELECT * FROM alunos WHERE id = ?", (id,))
+    aluno = cursor.fetchone()
+    conn.close()
+
+    if aluno is None:
+        return None
+
+    id_aluno, nome, cpf, nasc, matricula, pagamento = aluno
+
+    # Descriptografa o CPF antes de retornar
+    
+    cpf = descriptografar(cpf)
+
+    return (id_aluno, nome, cpf, nasc, matricula, pagamento)
 
 def atualizar_aluno(id, nome, cpf, nasc, matricula, pagamento):
-    # Função para atualizar os dados de um aluno existente
-    conn = conectar() 
-    cursor = conn.cursor() 
+
+    # Criptografa o CPF antes de atualizar no banco
+
+    cpf = criptografar(cpf)
+
+    conn = conectar()
+    cursor = conn.cursor()
 
     cursor.execute("""
     UPDATE alunos
     SET nome = ?, cpf = ?, data_nascimento = ?, data_matricula = ?, pagamento = ?
     WHERE id = ?
     """, (nome, cpf, nasc, matricula, pagamento, id))
-    # Atualiza os dados do aluno com o ID especificado
 
-    conn.commit() 
+    conn.commit()
     conn.close()
 
 def deletar_aluno(id):
-    # Função para deletar um aluno pelo ID
-    conn = conectar() 
-    cursor = conn.cursor() 
+    conn = conectar()
+    cursor = conn.cursor()
 
-    cursor.execute("DELETE FROM alunos WHERE id = ?", (id,)) 
-    # Deleta o aluno com o ID especificado
-    linhas = cursor.rowcount 
-    # O .rowcount retorna o número de linhas afetadas pela última operação SQL
+    cursor.execute("DELETE FROM alunos WHERE id = ?", (id,))
+    linhas = cursor.rowcount
 
-    conn.commit() 
+    conn.commit()
     conn.close()
 
-    return linhas # Retorna o número de linhas deletadas (0 ou 1) para indicar se a operação foi bem-sucedida
+    return linhas
 
 if __name__ == "__main__":
     criar_tabela()
-    # Este bloco é executado apenas quando o script é executado diretamente
-    # Ele chama a função criar_tabela para garantir que a tabela 'alunos' exista
     
