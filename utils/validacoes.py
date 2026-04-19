@@ -24,3 +24,12 @@ def campo_vazio(valor):
     
     return valor.strip() == ""
 # Verifica se o valor é vazio ou contém apenas espaços em branco
+
+def mascarar_cpf(cpf):
+    # Mascarar o CPF, mostrando apenas os últimos 4 dígitos
+    cpf = cpf.replace(".", "").replace("-", "")
+
+    if len(cpf) != 11:
+        return cpf
+
+    return f"***.***.{cpf[6:9]}-{cpf[9:]}"

@@ -59,6 +59,11 @@ class TelaListar(QWidget):
 
         for linha, aluno in enumerate(alunos):
             for coluna, valor in enumerate(aluno):
+
+                if coluna == 2: #CPF
+                    from utils.validacoes import mascarar_cpf
+                    valor = mascarar_cpf(valor)
+
                 self.tabela.setItem(linha, coluna, QTableWidgetItem(str(valor)))
 
     def filtrar_tabela(self):
