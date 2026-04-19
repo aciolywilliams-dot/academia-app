@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QLabel,
     QLineEdit, QPushButton
 )
-
+from banco import buscar_por_id
 import utils.tema as tema
 
 
@@ -27,6 +27,7 @@ class TelaDeletar(QWidget):
 
         # Botão buscar
         self.btn_buscar = QPushButton("Buscar")
+        self.btn_buscar.clicked.connect(self.buscar_aluno)
 
         # Área de resultado
         self.resultado = QLabel("")
@@ -44,3 +45,33 @@ class TelaDeletar(QWidget):
         layout.addWidget(self.btn_deletar)
 
         self.setLayout(layout)
+
+    def buscar_aluno(self):
+        id_texto = self.input_id.text()
+
+        if not id_texto.isdigit():
+            self.resultado.setText("ID inválido")
+            self.btn_deletar.setEnabled(False)
+            return
+
+        aluno = buscar_por_id(int(id_texto))
+
+        if aluno:
+            # aluno = (id, nome, cpf, nascimento, matricula, pagamento)
+            texto = f"""
+        ID: {aluno[0]}
+        Nome: {aluno[1]}
+        CPF: {aluno[2]}
+        Nascimento: {aluno[3]}
+        Matrícula: {aluno[4]}
+        Pagamento: {aluno[5]}
+        """
+            self.resultado.setText(texto)
+            self.btn_deletar.setEnabled(True)
+
+            # guarda o id para deletar depois
+            self.id_encontrado = aluno[0]
+
+        else:
+            self.resultado.setText("Aluno não encontrado")
+            self.btn_deletar.setEnabled(False)
