@@ -3,12 +3,11 @@ from PyQt6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QHBoxLayout
 
 # Importando módulo do tema corretamente
 import utils.tema as tema
-
 from utils.toggle import ToggleSwitch
 from ui.cadastro import TelaCadastro
 from ui.listar import TelaListar
 from ui.atualizar import TelaAtualizar
-
+from ui.deletar import TelaDeletar
 
 class Menu(QWidget):
     def __init__(self):
@@ -81,4 +80,5 @@ class Menu(QWidget):
         self.tela.show()
 
     def abrir_deletar(self):
-        print("Deletar funcionando")
+        self.tela = TelaDeletar()
+        self.tela.show()
