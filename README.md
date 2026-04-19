@@ -33,11 +33,11 @@ Este projeto tem como objetivo simular um sistema de gerenciamento de alunos de 
 
 ## Estrutura do Projeto
 
-ui/ → telas da aplicação
-utils/ → funções auxiliares (validações, tema)
-assets/ → ícones e imagens
-banco.py → gerenciamento do banco de dados
-main.py → inicialização do sistema
+- ui/ → telas da aplicação
+- utils/ → funções auxiliares (validações, tema)
+- assets/ → ícones e imagens
+- banco.py → gerenciamento do banco de dados
+- main.py → inicialização do sistema
 
 
 ---
