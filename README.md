@@ -23,17 +23,28 @@ Sistema desenvolvido em Python com PyQt6 para gerenciamento de alunos de uma aca
 1. Clone o repositório:
 git clone https://github.com/aciolywilliams-dot/academia-app.git
 
-2. Instale as dependências:
+2. Acesse a pasta do projeto:
+cd academia-app
+
+3. Instale as dependências:
 pip install pyqt6
 
-3. Execute o projeto:
+4. Inicialize o banco de dados (criação da tabela):
+python banco.py
+
+5. Execute o sistema:
 python main.py
+
+## Observações
+
+- O arquivo do banco de dados (`academia.db`) é criado automaticamente ao executar o arquivo `banco.py`.
+- Caso o banco não seja inicializado, o sistema pode apresentar erros ao tentar cadastrar ou listar alunos.
 
 ## Estrutura do projeto
 
 - ui/ → telas do sistema
 - utils/ → funções auxiliares (tema, validações)
-- banco.py → operações com banco de dados
+- banco.py → operações e criação do banco de dados
 - main.py → inicialização da aplicação
 
 ## Autor
